@@ -13,37 +13,60 @@
   <div id="game-wrapper">
     <!-- Top HUD (Match Info) -->
     <header id="top-hud">
-      <div class="hud-box enemy-towers">
+      <div class="hud-box enemy-towers" title="Torres Inimigas Destruídas">
         <span class="icon">👑</span>
         <span id="enemy-crowns" class="val">0</span>
       </div>
+
       <div class="hud-box timer-box">
         <span id="match-timer" class="timer-text">03:00</span>
         <span id="overtime-badge" class="badge hidden">OVERDRIVE 2X</span>
       </div>
-      <div class="hud-box player-towers">
+
+      <div class="hud-box player-towers" title="Suas Torres Destruídas">
         <span class="icon">👑</span>
         <span id="player-crowns" class="val">0</span>
       </div>
-      <button id="sound-btn" class="hud-icon-btn" title="Alternar Som">🔊</button>
+
+      <div class="hud-actions">
+        <button id="btn-emote-toggle" class="hud-icon-btn" title="Emotes e Provocações">💬</button>
+        <button id="sound-btn" class="hud-icon-btn" title="Alternar Som">🔊</button>
+      </div>
     </header>
 
     <!-- Main Game Canvas Container -->
     <main id="canvas-container">
       <canvas id="gameCanvas"></canvas>
-      <div id="deploy-guide" class="hidden">TOQUE NA ARENA PARA INVOCAR</div>
+
+      <!-- Dynamic Battle Banners -->
+      <div id="deploy-guide" class="hidden">ARRASTE OU TOQUE NA ARENA PARA INVOCAR</div>
+      <div id="battle-alert-banner" class="hidden">OVERDRIVE 2X: ENERGIA DUPLA!</div>
+
+      <!-- Quick Emotes Wheel / Bar -->
+      <div id="emotes-wheel" class="hidden">
+        <button class="emote-btn" data-emote="👍" data-msg="GG! Bom jogo!">👍</button>
+        <button class="emote-btn" data-emote="😎" data-msg="Protocolo Superior!">😎</button>
+        <button class="emote-btn" data-emote="🤖" data-msg="Beep Boop! Alvo Travado!">🤖</button>
+        <button class="emote-btn" data-emote="💥" data-msg="Sobrecarga Total!">💥</button>
+      </div>
     </main>
 
     <!-- Bottom HUD (Deck, Energy, Controls) -->
     <footer id="bottom-hud">
-      <!-- Energy Bar -->
+      <!-- Energy Bar with 10 pips -->
       <div id="energy-container">
         <div class="energy-info">
           <span class="energy-label">⚡ BATERIA</span>
-          <span id="energy-count" class="energy-count">5</span><span class="energy-max">/10</span>
+          <div class="energy-numeric">
+            <span id="energy-count" class="energy-count">5</span><span class="energy-max">/10</span>
+          </div>
         </div>
         <div class="energy-bar-bg">
           <div id="energy-bar-fill" class="energy-bar-fill" style="width: 50%;"></div>
+          <div class="energy-pips">
+            <span></span><span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span><span></span>
+          </div>
         </div>
       </div>
 
@@ -52,42 +75,158 @@
         <div id="cards-container">
           <!-- 4 Active cards generated dynamically -->
         </div>
-        <div id="next-card-wrapper">
+        <div id="next-card-wrapper" title="Próxima carta no ciclo">
           <span class="next-label">PRÓX.</span>
           <div id="next-card-preview" class="mini-card"></div>
         </div>
       </div>
     </footer>
 
-    <!-- Overlay: Start / Menu Screen -->
+    <!-- Overlay: Start / Lobby / Deck Builder Screen -->
     <div id="screen-menu" class="overlay-screen active">
       <div class="menu-content">
+        <!-- Logo -->
         <div class="cyber-logo">
-          <div class="logo-sub">ARENA DE BATALHA CIBERNÉTICA</div>
+          <div class="logo-sub">ARENA TÁTICA CIBERNÉTICA</div>
           <h1 class="logo-title">CYBER<br><span>ROYALE</span></h1>
-          <div class="logo-tag">PROTOCOLO TÁTICO EM TEMPO REAL</div>
+          <div class="logo-tag">PROTOCOLO ROYALE EM TEMPO REAL</div>
         </div>
 
-        <div class="instructions-card">
-          <h3>Como Jogar:</h3>
-          <ul>
-            <li>⚡ <strong>Energia:</strong> Carrega com o tempo (1 a 10). Em 1:00 min ativa <strong>Overdrive 2x</strong>!</li>
-            <li>🃏 <strong>Invoque Tropas:</strong> Selecione uma carta e toque no seu lado do campo.</li>
-            <li>⚔️ <strong>Destrua as Torres:</strong> 2 Nós de Defesa laterais e 1 Reator Central (Vitória Imediata).</li>
-            <li>🎯 <strong>Tropas Únicas:</strong> Tanques Mech, Drones Aéreos, Snipers, Ninjas e Choque EMP!</li>
-          </ul>
+        <!-- Navigation Tabs -->
+        <div class="menu-tabs">
+          <button id="tab-btn-battle" class="tab-btn active">⚔️ BATALHA</button>
+          <button id="tab-btn-deck" class="tab-btn">🛠️ DECK (HANGAR)</button>
+          <button id="tab-btn-rules" class="tab-btn">📜 REGRAS</button>
         </div>
 
-        <button id="btn-start-game" class="cyber-btn primary">
-          <span>INICIAR BATALHA</span>
-        </button>
+        <!-- TAB 1: BATALHA -->
+        <div id="tab-panel-battle" class="tab-panel active">
+          <div class="deck-preview-summary">
+            <div class="deck-preview-header">
+              <span>SEU DECK ATUAL (8 CARTAS)</span>
+              <strong id="avg-elixir-badge">CUSTO MÉDIO: 3.6 ⚡</strong>
+            </div>
+            <div id="deck-mini-icons" class="deck-mini-icons">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+
+          <div class="difficulty-selector">
+            <label class="diff-title">DIFICULDADE DA IA:</label>
+            <div class="diff-options">
+              <button class="diff-btn active" data-diff="easy">🔰 CADETE</button>
+              <button class="diff-btn" data-diff="normal">⚔️ TÁTICO</button>
+              <button class="diff-btn" data-diff="hard">💀 OVERCLOCK</button>
+            </div>
+          </div>
+
+          <button id="btn-start-game" class="cyber-btn primary">
+            <span>INICIAR BATALHA</span>
+          </button>
+        </div>
+
+        <!-- TAB 2: DECK (HANGAR) -->
+        <div id="tab-panel-deck" class="tab-panel">
+          <div class="hangar-instructions">
+            Toque em uma carta para inspecionar atributos ou trocar no seu deck de 8 cartas.
+          </div>
+
+          <div class="section-title">SEU DECK ATIVO (8 / 8)</div>
+          <div id="active-deck-grid" class="deck-slots-grid">
+            <!-- 8 active cards -->
+          </div>
+
+          <div class="section-title">COLEÇÃO DISPONÍVEL (RESERVA)</div>
+          <div id="reserve-deck-grid" class="deck-slots-grid">
+            <!-- reserve cards -->
+          </div>
+        </div>
+
+        <!-- TAB 3: REGRAS / COMO JOGAR -->
+        <div id="tab-panel-rules" class="tab-panel">
+          <div class="instructions-card">
+            <h3>Mecânicas Clash Royale:</h3>
+            <ul>
+              <li>⚡ <strong>Bateria (Elixir):</strong> Enche automaticamente até 10. Aos 60s ativa <strong>Overdrive 2x</strong> com o dobro de velocidade!</li>
+              <li>🃏 <strong>Invocação:</strong> Toque ou <em>arraste</em> cartas para o seu campo. O Pulso EMP e o Míssil Orbital atingem <em>qualquer lugar do mapa</em>!</li>
+              <li>👑 <strong>As 3 Torres:</strong> 2 Nós de Defesa laterais e 1 Reator Central. Destruir o Reator Central dá <strong>Vitória Imediata (3 Coroas)</strong>!</li>
+              <li>🛡️ <strong>Despertar do Reator:</strong> O Reator Central fica em repouso até sofrer dano ou até você perder um Nó lateral!</li>
+              <li>🚩 <strong>Conquista de Território:</strong> Derrubar um Nó inimigo permite invocar tropas além da ponte, avançando no campo adversário!</li>
+              <li>⚔️ <strong>Morte Súbita:</strong> Se o tempo acabar empatado, entra a Morte Súbita: a próxima torre destruída vence na hora!</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Overlay: Card Inspector Modal -->
+    <div id="card-modal" class="overlay-modal hidden">
+      <div class="modal-card-box">
+        <button id="btn-close-modal" class="modal-close-btn">&times;</button>
+        <div class="modal-header">
+          <div id="modal-card-icon" class="modal-card-icon">🤖</div>
+          <div class="modal-card-meta">
+            <h2 id="modal-card-name">Mech Titã</h2>
+            <div class="modal-card-tags">
+              <span id="modal-card-role" class="tag-role">Tanque</span>
+              <span id="modal-card-cost" class="tag-cost">5 ⚡</span>
+            </div>
+          </div>
+        </div>
+
+        <p id="modal-card-desc" class="modal-card-desc">Alta vida. Ignora tropas inimigas e foca exclusivamente em construções e torres.</p>
+
+        <div class="modal-stats-grid">
+          <div class="modal-stat-item">
+            <span class="lbl">Vida (HP)</span>
+            <strong id="modal-stat-hp">1750</strong>
+          </div>
+          <div class="modal-stat-item">
+            <span class="lbl">Dano</span>
+            <strong id="modal-stat-dmg">110</strong>
+          </div>
+          <div class="modal-stat-item">
+            <span class="lbl">Veloc. Ataque</span>
+            <strong id="modal-stat-speed">1.4s</strong>
+          </div>
+          <div class="modal-stat-item">
+            <span class="lbl">Alcance</span>
+            <strong id="modal-stat-range">Corpo a Corpo</strong>
+          </div>
+          <div class="modal-stat-item">
+            <span class="lbl">Alvos</span>
+            <strong id="modal-stat-targets">Construções</strong>
+          </div>
+          <div class="modal-stat-item">
+            <span class="lbl">Velocidade</span>
+            <strong id="modal-stat-movespeed">Lento</strong>
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button id="btn-equip-card" class="cyber-btn primary">
+            <span>EQUIPAR NO DECK</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Overlay: Swap Card Picker Modal -->
+    <div id="swap-modal" class="overlay-modal hidden">
+      <div class="modal-card-box">
+        <button id="btn-close-swap-modal" class="modal-close-btn">&times;</button>
+        <h3 class="swap-title">SUBSTITUIR POR QUAL CARTA DO DECK?</h3>
+        <p class="swap-desc">Escolha uma carta do seu deck atual para dar lugar à nova:</p>
+        <div id="swap-deck-grid" class="deck-slots-grid">
+          <!-- 8 current active cards to pick one to replace -->
+        </div>
       </div>
     </div>
 
     <!-- Overlay: Victory / Defeat Screen -->
     <div id="screen-gameover" class="overlay-screen hidden">
       <div class="gameover-content">
-        <h2 id="gameover-title" class="victory-title">VITÓRIA!</h2>
+        <h2 id="gameover-title" class="victory-title">VITÓRIA TÁTICA!</h2>
         <div id="gameover-crowns" class="crown-display">👑 👑 👑</div>
         <p id="gameover-desc" class="gameover-sub">O Reator inimigo foi neutralizado com sucesso.</p>
 
@@ -100,11 +239,20 @@
             <span>Suas Torres Restantes:</span>
             <strong id="stat-player-alive">3</strong>
           </div>
+          <div class="stat-row">
+            <span>Tropas Invocadas:</span>
+            <strong id="stat-deployed-count">0</strong>
+          </div>
         </div>
 
-        <button id="btn-restart" class="cyber-btn primary">
-          <span>JOGAR NOVAMENTE</span>
-        </button>
+        <div class="gameover-actions">
+          <button id="btn-restart" class="cyber-btn primary">
+            <span>JOGAR NOVAMENTE</span>
+          </button>
+          <button id="btn-menu-back" class="cyber-btn secondary">
+            <span>VOLTAR AO HANGAR</span>
+          </button>
+        </div>
       </div>
     </div>
   </div>
