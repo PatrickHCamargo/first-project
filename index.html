@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>CYBER ROYALE - Neon Protocol</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="game-wrapper">
+    <!-- Top HUD (Match Info) -->
+    <header id="top-hud">
+      <div class="hud-box enemy-towers">
+        <span class="icon">👑</span>
+        <span id="enemy-crowns" class="val">0</span>
+      </div>
+      <div class="hud-box timer-box">
+        <span id="match-timer" class="timer-text">03:00</span>
+        <span id="overtime-badge" class="badge hidden">OVERDRIVE 2X</span>
+      </div>
+      <div class="hud-box player-towers">
+        <span class="icon">👑</span>
+        <span id="player-crowns" class="val">0</span>
+      </div>
+      <button id="sound-btn" class="hud-icon-btn" title="Alternar Som">🔊</button>
+    </header>
+
+    <!-- Main Game Canvas Container -->
+    <main id="canvas-container">
+      <canvas id="gameCanvas"></canvas>
+      <div id="deploy-guide" class="hidden">TOQUE NA ARENA PARA INVOCAR</div>
+    </main>
+
+    <!-- Bottom HUD (Deck, Energy, Controls) -->
+    <footer id="bottom-hud">
+      <!-- Energy Bar -->
+      <div id="energy-container">
+        <div class="energy-info">
+          <span class="energy-label">⚡ BATERIA</span>
+          <span id="energy-count" class="energy-count">5</span><span class="energy-max">/10</span>
+        </div>
+        <div class="energy-bar-bg">
+          <div id="energy-bar-fill" class="energy-bar-fill" style="width: 50%;"></div>
+        </div>
+      </div>
+
+      <!-- Card Hand Tray -->
+      <div id="card-tray">
+        <div id="cards-container">
+          <!-- 4 Active cards generated dynamically -->
+        </div>
+        <div id="next-card-wrapper">
+          <span class="next-label">PRÓX.</span>
+          <div id="next-card-preview" class="mini-card"></div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Overlay: Start / Menu Screen -->
+    <div id="screen-menu" class="overlay-screen active">
+      <div class="menu-content">
+        <div class="cyber-logo">
+          <div class="logo-sub">ARENA DE BATALHA CIBERNÉTICA</div>
+          <h1 class="logo-title">CYBER<br><span>ROYALE</span></h1>
+          <div class="logo-tag">PROTOCOLO TÁTICO EM TEMPO REAL</div>
+        </div>
+
+        <div class="instructions-card">
+          <h3>Como Jogar:</h3>
+          <ul>
+            <li>⚡ <strong>Energia:</strong> Carrega com o tempo (1 a 10). Em 1:00 min ativa <strong>Overdrive 2x</strong>!</li>
+            <li>🃏 <strong>Invoque Tropas:</strong> Selecione uma carta e toque no seu lado do campo.</li>
+            <li>⚔️ <strong>Destrua as Torres:</strong> 2 Nós de Defesa laterais e 1 Reator Central (Vitória Imediata).</li>
+            <li>🎯 <strong>Tropas Únicas:</strong> Tanques Mech, Drones Aéreos, Snipers, Ninjas e Choque EMP!</li>
+          </ul>
+        </div>
+
+        <button id="btn-start-game" class="cyber-btn primary">
+          <span>INICIAR BATALHA</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Overlay: Victory / Defeat Screen -->
+    <div id="screen-gameover" class="overlay-screen hidden">
+      <div class="gameover-content">
+        <h2 id="gameover-title" class="victory-title">VITÓRIA!</h2>
+        <div id="gameover-crowns" class="crown-display">👑 👑 👑</div>
+        <p id="gameover-desc" class="gameover-sub">O Reator inimigo foi neutralizado com sucesso.</p>
+
+        <div class="battle-stats">
+          <div class="stat-row">
+            <span>Torres do Inimigo Derrubadas:</span>
+            <strong id="stat-enemy-destroyed">0</strong>
+          </div>
+          <div class="stat-row">
+            <span>Suas Torres Restantes:</span>
+            <strong id="stat-player-alive">3</strong>
+          </div>
+        </div>
+
+        <button id="btn-restart" class="cyber-btn primary">
+          <span>JOGAR NOVAMENTE</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="audio.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
