@@ -2325,7 +2325,8 @@ class GameEngine {
   }
 }
 
-// Instantiate engine when DOM is loaded
+// Export class and instantiate engine when DOM is loaded
+window.GameEngine = GameEngine;
 window.addEventListener('DOMContentLoaded', () => {
   window.gameEngine = new GameEngine();
 });
