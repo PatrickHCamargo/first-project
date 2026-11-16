@@ -64,6 +64,18 @@
       "created_at": "2026-11-16T18:02:02.262Z",
       "sender": "ios",
       "is_cancelled": false
+    },
+    {
+      "id": "e632b8cd-d56f-4a94-8ed6-4f5bd4569db8",
+      "role": "user",
+      "content": "Consegue montar um jogo tipo Clash Royale que rode no navegador, mas totalmente repaginado porém que siga a mesma mecânica de Clash Royale",
+      "status": "pending",
+      "model": "gemini-3.8-flash-high",
+      "client_type": "gemini-bridge",
+      "parent_message_id": null,
+      "created_at": "2026-11-16T18:06:23.938Z",
+      "sender": "ios",
+      "is_cancelled": false
     }
   ]
 }
