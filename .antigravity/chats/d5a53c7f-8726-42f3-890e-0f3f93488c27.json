@@ -40,6 +40,18 @@
       "created_at": "2026-11-16T18:00:37.268Z",
       "sender": "ios",
       "is_cancelled": false
+    },
+    {
+      "id": "bf56a040-1cfb-4c90-9620-b009649469ea",
+      "role": "agent",
+      "content": "Aqui estão algumas ideias do que podemos construir do zero em poucos minutos:\n\n### 1. 💼 Sites & Negócios\n- **Landing Page ou Portfólio**: Uma página moderna e responsiva para apresentar seu trabalho, serviços ou produto.\n- **Cardápio Digital Interativo**: Com fotos, categorias, cálculo de carrinho e envio de pedido direto para o WhatsApp.\n\n### 2. 📱 Aplicativos & Produtividade\n- **Controle Financeiro Pessoal**: Registro de receitas/despesas com gráficos visuais e resumo mensal.\n- **Quadro de Tarefas (Kanban)**: Estilo Trello, com colunas arrastáveis (A Fazer, Em Andamento, Concluído).\n- **Rastreador de Hábitos**: Para acompanhar rotinas diárias com metas e estatísticas.\n\n### 3. 🎮 Jogos & Interatividade\n- **Jogos Clássicos 2D**: Snake (cobrinha), Tetris, Space Invaders, Flappy Bird ou um jogo de memória.\n- **Quiz / Trivia Interativo**: Jogo de perguntas e respostas com pontuação, timer e ranking.\n\n---\n\nMas já que você também tem ideias em mente: **qual é a sua ideia?** Conte um pouco sobre ela e começamos a montar agora mesmo!",
+      "status": "completed",
+      "model": "gemini-3.8-flash-high",
+      "client_type": "gemini-bridge",
+      "parent_message_id": "84ee16ef-629a-4185-83b4-351f30414d33",
+      "created_at": "2026-11-16T18:00:49.123Z",
+      "sender": "macOS",
+      "is_cancelled": false
     }
   ]
 }
